@@ -5,7 +5,14 @@ import { Redirect, router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { images } from "../constants";
 import CustomButton from "../components/CustomButton";
+import { useGlobalContext } from "../context/GlobalProvider";
+import { useExistingSession } from "../lib/appwrite";
 export default function App() {
+  const{loading, isLoggedIn} = useGlobalContext();
+  // console.log("isLoading" + loading + " isLogged In " + isLoggedIn);
+  // if(useExistingSession) return <Redirect href="/home" />
+  
+  if(!loading && isLoggedIn) return <Redirect href="/home" />
   return (
     <SafeAreaView className="bg-primary h-full">
       <ScrollView contentContainerStyle={{ height: "100%" }}>
@@ -36,7 +43,7 @@ export default function App() {
             exploration with Aora
           </Text>
           <CustomButton
-            title="Continue With Email"
+            title="Log In To Start Your Journey"
             handlePress = {() => router.push('/sign-in') }
             containerStyles="w-full mt-10 "
           

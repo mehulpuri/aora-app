@@ -1,12 +1,15 @@
 import React, { useState } from "react";
-import { Image, ScrollView, Text, View } from "react-native";
+import { Alert, Image, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { images } from "../../constants";
 import FormField from "../../components/FormField";
 import CustomButton from "../../components/CustomButton";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
+import { createUser } from "../../lib/appwrite";
+import { useGlobalContext } from "../../context/GlobalProvider";
 
 const SignUp = () => {
+  const { setUser, setIsLoggedIn } = useGlobalContext();
   const [form, setForm] = useState({
     username: "",
     email: "",
@@ -14,7 +17,23 @@ const SignUp = () => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const submit = () => {};
+
+  const submit = async () => {
+    if (!form.username || !form.email || !form.pass) {
+      Alert.alert("Error", "Please Fill all the fields ");
+    }
+    setIsSubmitting(true);
+    try {
+      const result = await createUser(form.email, form.pass, form.username);
+      setUser(result);
+      setIsLoggedIn(true);
+      router.replace("/home"); //router.push: Adds a new screen to the navigation stack (user can go back). router.replace: Replaces the current screen in the stack (user cannot go back).
+    } catch (err) {
+      Alert.alert("Error", err.message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
   return (
     <SafeAreaView className="bg-primary h-full ">
       <ScrollView>
