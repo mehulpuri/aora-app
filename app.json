@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "habit-app",
-    "scheme" : "habit-app",
+    "scheme": "habit-app",
     "slug": "habit-app",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -27,6 +27,14 @@
     },
     "plugins": [
       "expo-router"
-    ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "0ff8cb71-bf69-4655-b3b7-a0302eb9086c"
+      }
+    }
   }
 }
